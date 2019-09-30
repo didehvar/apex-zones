@@ -67,7 +67,7 @@ export default {
         },
         // The following options are optional:
         useOnly: [
-          // 'auth',
+          'auth',
           'firestore'
           // 'functions',
           // 'storage',
