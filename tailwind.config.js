@@ -7,7 +7,7 @@
 module.exports = {
   theme: {
     extend: {
-      theme: {
+      textColor: {
         primary: '#3490dc'
       },
       minWidth: {
