@@ -7,7 +7,7 @@
 
     <ul class="flex-1">
       <li v-for="area in areas" :key="area">
-        {{ area }}
+        <nuxt-link :to="`/${area}`" class="capitalize">{{ area }}</nuxt-link>
       </li>
     </ul>
   </div>
