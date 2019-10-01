@@ -3,7 +3,7 @@
     <main class="flex-1 flex">
       <map-list />
 
-      <div class="min-w-1/5 bg-white shadow-md ml-6 pt-6">
+      <div class="min-w-1/5 bg-white shadow-md ml-6 pt-6 flex-1">
         <nuxt />
       </div>
     </main>

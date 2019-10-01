@@ -7,7 +7,10 @@ export const state = () => ({
 })
 
 export const getters = {
-  areaList: (state) => Object.keys(state.areas)
+  areaList: (state) => Object.keys(state.areas),
+  areaVariations: (state) => (area) => Object.keys(state.areas[area] || {}),
+  areaScreenshots: (state) => (area, variation) =>
+    (state.areas[area] || {})[variation]
 }
 
 export const mutations = {

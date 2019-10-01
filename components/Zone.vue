@@ -5,9 +5,15 @@
 
       <div class="flex justify-between">
         <ul class="flex">
-          <li>Variation 1</li>
-          <li class="ml-3">Variation 2</li>
-          <li class="ml-3">Variation 3</li>
+          <li
+            v-for="areaVariation in areaVariations"
+            :key="areaVariation"
+            class="mr-4"
+          >
+            <nuxt-link :to="`/${name}/${areaVariation}`" class="capitalize">{{
+              areaVariation
+            }}</nuxt-link>
+          </li>
         </ul>
 
         <div>
@@ -17,12 +23,13 @@
     </div>
 
     <div class="my-4 px-6 flex flex-wrap">
-      <div class="w-64 h-64 mx-2 my-2 bg-gray-100"></div>
-      <div class="w-64 h-64 mx-2 my-2 bg-gray-100"></div>
-      <div class="w-64 h-64 mx-2 my-2 bg-gray-100"></div>
-      <div class="w-64 h-64 mx-2 my-2 bg-gray-100"></div>
-      <div class="w-64 h-64 mx-2 my-2 bg-gray-100"></div>
-      <div class="w-64 h-64 mx-2 my-2 bg-gray-100"></div>
+      <div
+        v-for="screenshot in screenshots"
+        :key="screenshot"
+        class="w-64 h-64 mx-2 my-2 bg-gray-100"
+      >
+        {{ screenshot }}
+      </div>
     </div>
   </div>
 </template>
@@ -31,12 +38,16 @@
 export default {
   data() {
     return {
-      name: this.$route.params.zone
+      name: this.$route.params.zone,
+      variation: this.$route.params.variation
     }
   },
   computed: {
-    area() {
-      return this.$store.areas[this.name]
+    screenshots() {
+      return this.$store.getters.areaScreenshots(this.name, this.variation)
+    },
+    areaVariations() {
+      return this.$store.getters.areaVariations(this.name)
     }
   }
 }
