@@ -1,16 +1,21 @@
 const UPDATE_USER = 'UPDATE_USER'
-const UPDATE_AREAS = 'UPDATE_AREAS'
+const UPDATE_MAP = 'UPDATE_MAP'
 
 export const state = () => ({
   user: null,
-  areas: {}
+  maps: {}
 })
 
 export const getters = {
-  areaList: (state) => Object.keys(state.areas),
-  areaVariations: (state) => (area) => Object.keys(state.areas[area] || {}),
-  areaScreenshots: (state) => (area, variation) =>
-    (state.areas[area] || {})[variation]
+  mapList: (state) => Object.keys(state.maps),
+  defaultMap: (state) => Object.keys(state.maps)[0],
+
+  zoneList: (state) => (map) => Object.keys(state.maps[map] || {}),
+  zoneVariations: (state) => (map, zone) =>
+    Object.keys((state.maps[map] || {})[zone] || {}),
+
+  variationScreenshots: (state) => (map, zone, variation) =>
+    ((state.maps[map] || {})[zone] || {})[variation]
 }
 
 export const mutations = {
@@ -18,15 +23,53 @@ export const mutations = {
     state.user = user
   },
 
-  [UPDATE_AREAS](state, areas) {
-    state.areas = {
-      ...state.areas,
-      ...areas
+  [UPDATE_MAP](state, { map, zones }) {
+    state.maps = {
+      ...state.maps,
+      [map]: zones
     }
   }
 }
 
 export const actions = {
+  mapsSnapshot({ commit }) {
+    this.$fireStore.collection('maps').onSnapshot((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        commit(UPDATE_MAP, { map: doc.id, zones: doc.data() })
+      })
+    })
+  },
+
+  async createZone({ state }, { map, zone }) {
+    const mapName = map || state.maps[0]
+    const name = zone.toLowerCase()
+
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(mapName)
+        .update({ [name]: {} })
+    } catch (ex) {
+      window.alert(ex)
+    }
+  },
+
+  async createVariation({ state }, { map, zone, variation }) {
+    const mapName = map || state.maps[0]
+    const name = variation.toLowerCase()
+
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(mapName)
+        .update({
+          [`${zone}.${name}`]: []
+        })
+    } catch (ex) {
+      window.alert(ex)
+    }
+  },
+
   async signIn({ commit }) {
     try {
       const provider = new this.$fireAuthObj.GoogleAuthProvider()
@@ -37,26 +80,6 @@ export const actions = {
       } = await this.$fireAuth.signInWithPopup(provider)
 
       commit(UPDATE_USER, { email, displayName })
-    } catch (ex) {
-      window.alert(ex)
-    }
-  },
-
-  mapSnapshot({ commit }, map) {
-    this.$fireStore
-      .collection('maps')
-      .doc(map)
-      .onSnapshot((doc) => commit(UPDATE_AREAS, doc.data()))
-  },
-
-  async createArea({ commit }, { map, area }) {
-    const name = area.toLowerCase()
-
-    try {
-      await this.$fireStore
-        .collection('maps')
-        .doc(map)
-        .update({ [name]: {} })
     } catch (ex) {
       window.alert(ex)
     }

@@ -2,43 +2,44 @@
   <div class="min-w-1/5 bg-white shadow-md px-8 py-6 flex flex-col">
     <div class="flex justify-between">
       <h1 class="mb-4">{{ map }}</h1>
-      <plus @click="createArea" />
+      <plus @click="createZone" />
     </div>
 
     <ul class="flex-1">
-      <li v-for="area in areaList" :key="area">
-        <nuxt-link :to="`/${area}`" class="capitalize">{{ area }}</nuxt-link>
+      <li v-for="zone in zoneList" :key="zone">
+        <nuxt-link :to="`/${map}/${zone}`" class="capitalize">{{
+          zone
+        }}</nuxt-link>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Plus from '~/components/Plus'
 
 export default {
   components: {
     Plus
   },
-  data() {
-    return {
-      map: "King's Canyon"
+  computed: {
+    map() {
+      return this.$route.params.map || this.$store.getters.defaultMap
+    },
+    zoneList() {
+      return this.$store.getters.zoneList(this.map)
     }
   },
-  computed: {
-    ...mapGetters(['areaList'])
-  },
   created() {
-    this.$store.dispatch('mapSnapshot', this.map)
+    this.$store.dispatch('mapsSnapshot')
   },
   methods: {
-    createArea() {
+    createZone() {
       const { map } = this
-      const area = window.prompt('Zone')
+      const zone = window.prompt('Zone')
 
-      if (area) {
-        this.$store.dispatch('createArea', { map, area })
+      if (zone) {
+        this.$store.dispatch('createZone', { map, zone })
       }
     }
   }
