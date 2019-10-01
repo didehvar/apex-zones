@@ -1,7 +1,7 @@
 <template>
   <div class="px-20 pt-12 pb-8 bg-gray-200 min-h-screen flex flex-col">
     <main class="flex-1 flex">
-      <zone />
+      <map-list />
 
       <div class="min-w-1/5 bg-white shadow-md ml-6 pt-6">
         <div class="px-8">
@@ -39,11 +39,11 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Zone from '~/components/Zone'
+import MapList from '~/components/MapList'
 
 export default {
   components: {
-    Zone
+    MapList
   },
   methods: {
     ...mapActions(['signIn'])

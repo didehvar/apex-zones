@@ -1,12 +1,18 @@
 const UPDATE_USER = 'UPDATE_USER'
+const UPDATE_AREAS = 'UPDATE_AREAS'
 
 export const state = () => ({
-  user: null
+  user: null,
+  areas: []
 })
 
 export const mutations = {
   [UPDATE_USER](state, user) {
     state.user = user
+  },
+
+  [UPDATE_AREAS](state, areas) {
+    state.areas = areas
   }
 }
 
@@ -26,12 +32,19 @@ export const actions = {
     }
   },
 
-  async createArea({ commit }, area) {
+  mapSnapshot({ commit }, map) {
+    this.$fireStore
+      .collection('maps')
+      .doc(map)
+      .onSnapshot((doc) => commit(UPDATE_AREAS, doc.data().areas))
+  },
+
+  async createArea({ commit }, { map, area }) {
     try {
       await this.$fireStore
-        .collection('zones')
-        .doc(area)
-        .set({ area })
+        .collection('maps')
+        .doc(map)
+        .update({ areas: this.$fireStoreObj.FieldValue.arrayUnion(area) })
     } catch (ex) {
       window.alert(ex)
     }
