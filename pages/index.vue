@@ -1,21 +1,7 @@
 <template>
   <div class="px-20 pt-12 pb-8 bg-gray-200 min-h-screen flex flex-col">
     <main class="flex-1 flex">
-      <div class="min-w-1/5 bg-white shadow-md px-8 py-6 flex flex-col">
-        <div class="flex justify-between">
-          <h1 class="mb-4">Kings Canyon</h1>
-          <plus />
-        </div>
-
-        <ul class="flex-1">
-          <li>
-            Artillery
-          </li>
-          <li>
-            Relay
-          </li>
-        </ul>
-      </div>
+      <zone />
 
       <div class="min-w-1/5 bg-white shadow-md ml-6 pt-6">
         <div class="px-8">
@@ -53,11 +39,11 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Plus from '~/components/Plus'
+import Zone from '~/components/Zone'
 
 export default {
   components: {
-    Plus
+    Zone
   },
   methods: {
     ...mapActions(['signIn'])

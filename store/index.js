@@ -24,5 +24,16 @@ export const actions = {
     } catch (ex) {
       window.alert(ex)
     }
+  },
+
+  async createArea({ commit }, area) {
+    try {
+      await this.$fireStore
+        .collection('zones')
+        .doc(area)
+        .set({ area })
+    } catch (ex) {
+      window.alert(ex)
+    }
   }
 }
