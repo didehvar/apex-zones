@@ -2,7 +2,10 @@
   <div class="px-20 pt-12 pb-8 bg-gray-200 min-h-screen flex flex-col">
     <main class="flex-1 flex">
       <div class="min-w-1/5 bg-white shadow-md px-8 py-6 flex flex-col">
-        <h1 class="mb-4">Kings Canyon</h1>
+        <div class="flex justify-between">
+          <h1 class="mb-4">Kings Canyon</h1>
+          <plus />
+        </div>
 
         <ul class="flex-1">
           <li>
@@ -49,18 +52,15 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    async signIn() {
-      try {
-        const provider = new this.$fireAuthObj.GoogleAuthProvider()
-        provider.addScope('email')
+import { mapActions } from 'vuex'
+import Plus from '~/components/Plus'
 
-        await this.$fireAuth.signInWithPopup(provider)
-      } catch (ex) {
-        window.alert(ex)
-      }
-    }
+export default {
+  components: {
+    Plus
+  },
+  methods: {
+    ...mapActions(['signIn'])
   }
 }
 </script>

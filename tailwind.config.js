@@ -7,6 +7,9 @@
 module.exports = {
   theme: {
     extend: {
+      theme: {
+        primary: '#3490dc'
+      },
       minWidth: {
         '1/5': '20%',
         '1/4': '25%',
