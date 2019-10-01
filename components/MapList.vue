@@ -6,7 +6,7 @@
     </div>
 
     <ul class="flex-1">
-      <li v-for="area in areas" :key="area">
+      <li v-for="area in areaList" :key="area">
         <nuxt-link :to="`/${area}`" class="capitalize">{{ area }}</nuxt-link>
       </li>
     </ul>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Plus from '~/components/Plus'
 
 export default {
@@ -27,7 +27,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['areas'])
+    ...mapGetters(['areaList'])
   },
   created() {
     this.$store.dispatch('mapSnapshot', this.map)

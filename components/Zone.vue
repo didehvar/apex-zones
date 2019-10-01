@@ -33,6 +33,11 @@ export default {
     return {
       name: this.$route.params.zone
     }
+  },
+  computed: {
+    area() {
+      return this.$store.areas[this.name]
+    }
   }
 }
 </script>
