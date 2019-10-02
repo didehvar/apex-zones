@@ -34,18 +34,29 @@
         :key="screenshot"
         class="w-64 h-64 mx-2 my-2 bg-gray-100"
       >
-        {{ screenshot }}
+        <img :src="screenshot" />
       </div>
+    </div>
+
+    <div class="px-8 pb-6 text-right">
+      <screenshot-upload
+        v-if="map && zone && variation"
+        :map="map"
+        :zone="zone"
+        :variation="variation"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import Plus from '~/components/Plus'
+import ScreenshotUpload from '~/components/ScreenshotUpload'
 
 export default {
   components: {
-    Plus
+    Plus,
+    ScreenshotUpload
   },
   data() {
     return {

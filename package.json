@@ -20,9 +20,11 @@
     }
   },
   "dependencies": {
+    "cropperjs": "^1.5.5",
     "firebase": "^7.0.0",
     "nuxt": "^2.0.0",
-    "nuxt-fire": "^2.0.1"
+    "nuxt-fire": "^2.0.1",
+    "vue-upload-component": "^2.8.20"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",

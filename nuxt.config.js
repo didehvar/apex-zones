@@ -54,7 +54,7 @@ export default {
             authDomain: 'apex-zones.firebaseapp.com',
             databaseURL: 'https://apex-zones.firebaseio.com',
             projectId: 'apex-zones',
-            storageBucket: '',
+            storageBucket: 'gs://apex-zones.appspot.com',
             messagingSenderId: '1050652942269',
             appId: '1:1050652942269:web:44bad1c9d19437d4bd7cd4'
           },
@@ -63,21 +63,13 @@ export default {
             authDomain: 'apex-zones.firebaseapp.com',
             databaseURL: 'https://apex-zones.firebaseio.com',
             projectId: 'apex-zones',
-            storageBucket: '',
+            storageBucket: 'gs://apex-zones.appspot.com',
             messagingSenderId: '1050652942269',
             appId: '1:1050652942269:web:44bad1c9d19437d4bd7cd4'
           }
         },
         // The following options are optional:
-        useOnly: [
-          'auth',
-          'firestore'
-          // 'functions',
-          // 'storage',
-          // 'realtimeDb',
-          // 'messaging',
-          // 'performance'
-        ]
+        useOnly: ['auth', 'firestore', 'storage']
       }
     ]
   ],

@@ -70,6 +70,22 @@ export const actions = {
     }
   },
 
+  async addScreenshot({ state }, { map, zone, variation, url }) {
+    const mapName = map || state.maps[0]
+    const name = variation.toLowerCase()
+
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(mapName)
+        .update({
+          [`${zone}.${name}`]: this.$fireStoreObj.FieldValue.arrayUnion(url)
+        })
+    } catch (ex) {
+      window.alert(ex)
+    }
+  },
+
   async signIn({ commit }) {
     try {
       const provider = new this.$fireAuthObj.GoogleAuthProvider()
