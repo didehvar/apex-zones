@@ -1,30 +1,30 @@
 <template>
   <div v-if="user">
-    <div v-show="!edit">
-      <img v-if="files.length" :src="files[0].url" />
-
-      <div class="text-center p-2">
-        <file-upload
-          ref="upload"
-          v-model="files"
-          extensions="jpg,jpeg"
-          accept="image/jpeg"
-          name="screenshot"
-          class=""
-          :drop="!edit"
-          @input-filter="inputFilter"
-          @input-file="inputFile"
-        >
-          Upload screenshot
-        </file-upload>
-      </div>
+    <div v-show="!edit" class="text-center p-2">
+      <file-upload
+        ref="upload"
+        v-model="files"
+        extensions="png,jpg,jpeg"
+        accept="image/png,image/jpeg"
+        name="screenshot"
+        class=""
+        :drop="!edit"
+        @input-filter="inputFilter"
+        @input-file="inputFile"
+      >
+        Upload screenshot
+      </file-upload>
     </div>
 
     <div v-show="files.length" class="modal">
-      <div v-if="uploading">Progress {{ progress }}</div>
-
       <div>
-        <div v-show="files.length && edit">
+        <div v-show="!edit">
+          <img v-if="files.length" :src="files[0].url" />
+
+          <div v-if="uploading">Progress {{ progress }}</div>
+        </div>
+
+        <div v-show="edit">
           <div v-if="files.length">
             <img ref="editImage" :src="files[0].url" />
           </div>
@@ -117,7 +117,13 @@ export default {
             movable: false,
             rotatable: false,
             scalable: false,
-            zoomable: false
+            zoomable: false,
+            data: {
+              height: 1014,
+              width: 1014,
+              x: 420,
+              y: 0
+            }
           })
           this.cropper = cropper
         })
@@ -187,7 +193,7 @@ export default {
     },
     inputFilter(newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
-        if (!/\.(jpg|jpeg)$/i.test(newFile.name)) {
+        if (!/\.(png|jpg|jpeg)$/i.test(newFile.name)) {
           window.alert('Your choice is not a picture')
           return prevent()
         }
