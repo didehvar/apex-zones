@@ -1,7 +1,7 @@
 <template>
   <div class="h-full flex flex-col">
     <div class="px-8">
-      <h2 class="mb-4 capitalize">{{ zone }}</h2>
+      <h2 class="mb-4 capitalize text-xl">{{ zone }}</h2>
 
       <div class="flex justify-between">
         <ul class="flex flex-1">
@@ -19,7 +19,7 @@
         </ul>
 
         <div class="mx-4">
-          <plus @click="createVariation" />
+          <admin-button text="Add Variation" @click="createVariation" />
         </div>
 
         <div>
@@ -28,13 +28,15 @@
       </div>
     </div>
 
-    <div class="my-4 px-6 flex-1 flex flex-wrap">
-      <div
-        v-for="screenshot in screenshots"
-        :key="screenshot"
-        class="w-64 h-64 mx-2 my-2 bg-gray-100"
-      >
-        <img :src="screenshot" />
+    <div class="flex-1">
+      <div class="my-4 px-6 flex flex-wrap">
+        <div
+          v-for="screenshot in screenshots"
+          :key="screenshot"
+          class="w-64 h-64 mx-2 my-2 bg-gray-100"
+        >
+          <img :src="screenshot" />
+        </div>
       </div>
     </div>
 
@@ -50,12 +52,12 @@
 </template>
 
 <script>
-import Plus from '~/components/Plus'
+import AdminButton from '~/components/AdminButton'
 import ScreenshotUpload from '~/components/ScreenshotUpload'
 
 export default {
   components: {
-    Plus,
+    AdminButton,
     ScreenshotUpload
   },
   data() {

@@ -17,18 +17,14 @@
     </div>
 
     <div v-show="files.length" class="modal">
-      <div>
+      <div class="text-center">
         <div v-show="!edit">
+          <div v-if="uploading" class="p-4">Progress: {{ progress }}%</div>
           <img v-if="files.length" :src="files[0].url" />
-
-          <div v-if="uploading">Progress {{ progress }}</div>
         </div>
 
         <div v-show="edit">
-          <div v-if="files.length">
-            <img ref="editImage" :src="files[0].url" />
-          </div>
-          <div class="text-center p-4">
+          <div class="p-4">
             <button
               type="button"
               class="btn btn-secondary"
@@ -43,6 +39,10 @@
             >
               Save
             </button>
+          </div>
+
+          <div v-if="files.length">
+            <img ref="editImage" :src="files[0].url" />
           </div>
         </div>
       </div>
@@ -164,8 +164,9 @@ export default {
       uploadTask.on(
         this.$fireStorageObj.TaskEvent.STATE_CHANGED,
         (snapshot) => {
-          this.progress =
+          this.progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          )
         },
         (error) => {
           this.uploading = false

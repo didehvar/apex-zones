@@ -33,11 +33,26 @@ export const mutations = {
 
 export const actions = {
   mapsSnapshot({ commit }) {
-    this.$fireStore.collection('maps').onSnapshot((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        commit(UPDATE_MAP, { map: doc.id, zones: doc.data() })
+    return new Promise((resolve) => {
+      this.$fireStore.collection('maps').onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          commit(UPDATE_MAP, { map: doc.id, zones: doc.data() })
+        })
+
+        resolve()
       })
     })
+  },
+
+  async createMap(_, { map }) {
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(map)
+        .set({})
+    } catch (ex) {
+      window.alert(ex)
+    }
   },
 
   async createZone({ state }, { map, zone }) {
