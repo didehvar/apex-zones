@@ -27,7 +27,23 @@
         </div>
 
         <div>
-          View () () ()
+          <span class="text-primary">View</span>
+
+          <button
+            class="btn"
+            :class="{ 'text-primary': viewSmall }"
+            @click="view = views.small"
+          >
+            : :
+          </button>
+
+          <button
+            class="btn"
+            :class="{ 'text-primary': !viewSmall }"
+            @click="view = views.large"
+          >
+            | |
+          </button>
         </div>
       </div>
     </div>
@@ -37,7 +53,13 @@
         <div
           v-for="screenshot in screenshots"
           :key="screenshot"
-          class="w-64 h-64 mx-2 my-2 bg-gray-100"
+          class="mx-2 my-2 bg-gray-100"
+          :class="{
+            'w-64': viewSmall,
+            'h-64': viewSmall,
+            'w-2/5': !viewSmall,
+            'h-2/5': !viewSmall
+          }"
         >
           <img :src="screenshot" />
         </div>
@@ -71,12 +93,20 @@ export default {
   },
 
   data() {
+    const views = { small: 'small', large: 'large' }
+
     return {
-      zone: this.$route.params.zone
+      zone: this.$route.params.zone,
+      view: views.small,
+      views
     }
   },
 
   computed: {
+    viewSmall() {
+      return this.view === this.views.small
+    },
+
     variation() {
       return this.$route.params.variation || this.zoneVariations[0]
     },
