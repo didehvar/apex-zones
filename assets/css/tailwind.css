@@ -1,3 +1,15 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.btn {
+  @apply p-1;
+}
+
+.btn-primary {
+  @apply btn text-primary;
+}
+
+.btn-delete {
+  @apply btn text-red-800;
+}

@@ -3,7 +3,7 @@
     <div class="px-8">
       <h2 class="mb-4 capitalize text-xl">{{ zone }}</h2>
 
-      <div class="flex justify-between">
+      <div class="flex justify-between items-center">
         <ul class="flex flex-1">
           <li
             v-for="zoneVariation in zoneVariations"
@@ -15,11 +15,15 @@
               class="capitalize"
               >{{ zoneVariation }}</nuxt-link
             >
+
+            <button class="btn-delete" @click="deleteVariation">-</button>
           </li>
         </ul>
 
         <div class="mx-4">
-          <admin-button text="Add Variation" @click="createVariation" />
+          <button class="btn-primary" @click="createVariation">
+            Add Variation
+          </button>
         </div>
 
         <div>
@@ -52,26 +56,31 @@
 </template>
 
 <script>
-import AdminButton from '~/components/AdminButton'
 import ScreenshotUpload from '~/components/ScreenshotUpload'
 
 export default {
   components: {
-    AdminButton,
     ScreenshotUpload
   },
+
+  props: {
+    map: {
+      type: String,
+      required: true
+    }
+  },
+
   data() {
     return {
       zone: this.$route.params.zone
     }
   },
+
   computed: {
-    map() {
-      return this.$route.params.map || this.$store.getters.defaultMap
-    },
     variation() {
       return this.$route.params.variation || this.zoneVariations[0]
     },
+
     screenshots() {
       return this.$store.getters.variationScreenshots(
         this.map,
@@ -79,10 +88,12 @@ export default {
         this.variation
       )
     },
+
     zoneVariations() {
       return this.$store.getters.zoneVariations(this.map, this.zone)
     }
   },
+
   methods: {
     createVariation() {
       const { map, zone } = this
@@ -90,6 +101,18 @@ export default {
 
       if (variation) {
         this.$store.dispatch('createVariation', { map, zone, variation })
+      }
+    },
+
+    deleteVariation() {
+      const { map, zone, variation } = this
+
+      if (
+        window.confirm(`Are you sure you want to delete ${variation}?`) &&
+        variation
+      ) {
+        this.$store.dispatch('deleteVariation', { map, zone, variation })
+        this.$router.push(`/${map}/${zone}`)
       }
     }
   }

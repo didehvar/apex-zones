@@ -1,5 +1,5 @@
 const UPDATE_USER = 'UPDATE_USER'
-const UPDATE_MAP = 'UPDATE_MAP'
+const UPDATE_MAPS = 'UPDATE_MAPS'
 
 export const state = () => ({
   user: null,
@@ -7,6 +7,8 @@ export const state = () => ({
 })
 
 export const getters = {
+  authenticated: (state) => state.user !== null,
+
   mapList: (state) => Object.keys(state.maps),
   defaultMap: (state) => Object.keys(state.maps)[0],
 
@@ -23,11 +25,8 @@ export const mutations = {
     state.user = user
   },
 
-  [UPDATE_MAP](state, { map, zones }) {
-    state.maps = {
-      ...state.maps,
-      [map]: zones
-    }
+  [UPDATE_MAPS](state, maps) {
+    state.maps = maps
   }
 }
 
@@ -35,10 +34,13 @@ export const actions = {
   mapsSnapshot({ commit }) {
     return new Promise((resolve) => {
       this.$fireStore.collection('maps').onSnapshot((querySnapshot) => {
+        const maps = {}
+
         querySnapshot.forEach((doc) => {
-          commit(UPDATE_MAP, { map: doc.id, zones: doc.data() })
+          maps[doc.id] = doc.data()
         })
 
+        commit(UPDATE_MAPS, maps)
         resolve()
       })
     })
@@ -50,6 +52,17 @@ export const actions = {
         .collection('maps')
         .doc(map)
         .set({})
+    } catch (ex) {
+      window.alert(ex)
+    }
+  },
+
+  async deleteMap(_, { map }) {
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(map)
+        .delete()
     } catch (ex) {
       window.alert(ex)
     }
@@ -69,6 +82,19 @@ export const actions = {
     }
   },
 
+  async deleteZone({ state }, { map, zone }) {
+    const name = zone.toLowerCase()
+
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(map)
+        .update({ [name]: this.$fireStoreObj.FieldValue.delete() })
+    } catch (ex) {
+      window.alert(ex)
+    }
+  },
+
   async createVariation({ state }, { map, zone, variation }) {
     const mapName = map || state.maps[0]
     const name = variation.toLowerCase()
@@ -79,6 +105,21 @@ export const actions = {
         .doc(mapName)
         .update({
           [`${zone}.${name}`]: []
+        })
+    } catch (ex) {
+      window.alert(ex)
+    }
+  },
+
+  async deleteVariation({ state }, { map, zone, variation }) {
+    const name = variation.toLowerCase()
+
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(map)
+        .update({
+          [`${zone}.${name}`]: this.$fireStoreObj.FieldValue.delete()
         })
     } catch (ex) {
       window.alert(ex)
