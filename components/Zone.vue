@@ -16,18 +16,24 @@
               >{{ zoneVariation }}</nuxt-link
             >
 
-            <button class="btn-delete" @click="deleteVariation">-</button>
+            <button
+              v-if="authenticated"
+              class="btn-delete"
+              @click="deleteVariation"
+            >
+              -
+            </button>
           </li>
         </ul>
 
-        <div class="mx-4">
+        <div v-if="authenticated" class="mx-4">
           <button class="btn-primary" @click="createVariation">
             Add Variation
           </button>
         </div>
 
         <div>
-          <span class="text-primary">View</span>
+          <span>View</span>
 
           <button
             class="btn"
@@ -78,6 +84,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ScreenshotUpload from '~/components/ScreenshotUpload'
 
 export default {
@@ -103,6 +110,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['authenticated']),
+
     viewSmall() {
       return this.view === this.views.small
     },

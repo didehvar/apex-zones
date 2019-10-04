@@ -23,11 +23,19 @@
           zone
         }}</nuxt-link>
 
-        <button class="btn-delete" @click="deleteZone(zone)">-</button>
+        <button
+          v-if="authenticated"
+          class="btn-delete"
+          @click="deleteZone(zone)"
+        >
+          -
+        </button>
       </div>
     </div>
 
-    <button class="btn-primary" @click="createZone">Add Zone</button>
+    <button v-if="authenticated" class="btn-primary" @click="createZone">
+      Add Zone
+    </button>
   </div>
 </template>
 
