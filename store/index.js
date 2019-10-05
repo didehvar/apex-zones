@@ -1,9 +1,11 @@
 const UPDATE_USER = 'UPDATE_USER'
 const UPDATE_MAPS = 'UPDATE_MAPS'
+const UPDATE_ADMINS = 'UPDATE_ADMINS'
 
 export const state = () => ({
   user: null,
-  maps: {}
+  maps: {},
+  admins: null
 })
 
 export const getters = {
@@ -27,6 +29,10 @@ export const mutations = {
 
   [UPDATE_MAPS](state, maps) {
     state.maps = maps
+  },
+
+  [UPDATE_ADMINS](state, admins) {
+    state.admins = admins
   }
 }
 
@@ -43,6 +49,19 @@ export const actions = {
         commit(UPDATE_MAPS, maps)
         resolve(maps)
       })
+    })
+  },
+
+  adminSnapshot({ commit }) {
+    return new Promise((resolve) => {
+      this.$fireStore
+        .collection('users')
+        .doc('admins')
+        .onSnapshot((docSnapshot) => {
+          const admins = docSnapshot.get('emails')
+          commit(UPDATE_ADMINS, admins)
+          resolve(admins)
+        })
     })
   },
 

@@ -31,12 +31,6 @@ export default {
     ...mapGetters(['defaultMap'])
   },
 
-  created() {
-    if (!this.defaultMap) {
-      this.$store.dispatch('mapsSnapshot')
-    }
-  },
-
   middleware: 'auth'
 }
 </script>
