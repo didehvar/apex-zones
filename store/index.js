@@ -142,6 +142,21 @@ export const actions = {
     }
   },
 
+  async deleteScreenshot(_, { map, zone, variation, url }) {
+    const name = variation.toLowerCase()
+
+    try {
+      await this.$fireStore
+        .collection('maps')
+        .doc(map)
+        .update({
+          [`${zone}.${name}`]: this.$fireStoreObj.FieldValue.arrayRemove(url)
+        })
+    } catch (ex) {
+      window.alert(ex)
+    }
+  },
+
   signIn() {
     try {
       const provider = new this.$fireAuthObj.GoogleAuthProvider()

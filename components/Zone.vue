@@ -65,7 +65,15 @@
             large: !viewSmall
           }"
         >
-          <img :src="screenshot" />
+          <div class="relative">
+            <button
+              class="btn-delete delete-screenshot"
+              @click="deleteScreenshot(screenshot)"
+            >
+              X
+            </button>
+            <img :src="screenshot" />
+          </div>
         </div>
       </div>
     </div>
@@ -88,6 +96,11 @@
 
 .large {
   width: calc(100% * (1 / 2) - 1rem);
+}
+
+.delete-screenshot {
+  @apply absolute top-0 right-0 m-2 rounded-full w-6 h-6 text-center flex items-center justify-center;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>
 
@@ -160,6 +173,17 @@ export default {
       ) {
         this.$store.dispatch('deleteVariation', { map, zone, variation })
         this.$router.push(`/${map}/${zone}`)
+      }
+    },
+
+    deleteScreenshot(url) {
+      const { map, zone, variation } = this
+
+      if (
+        window.confirm('Are you sure you want to delete this screenshot?') &&
+        url
+      ) {
+        this.$store.dispatch('deleteScreenshot', { map, zone, variation, url })
       }
     }
   }
