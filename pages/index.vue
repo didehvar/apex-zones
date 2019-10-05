@@ -1,18 +1,48 @@
 <template>
-  <div></div>
+  <div class="min-h-screen flex items-center justify-center">
+    <div v-if="loading">Loading ...</div>
+    <button v-else class="btn" @click="signIn">Sign in with Google</button>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  computed: {
-    ...mapGetters(['mapList'])
+  data() {
+    return {
+      loading: false
+    }
   },
 
-  async created() {
-    await this.$store.dispatch('mapsSnapshot')
-    this.$router.push(`/${this.mapList[0]}`)
+  computed: {
+    ...mapGetters(['authenticated', 'defaultMap'])
+  },
+
+  watch: {
+    async authenticated() {
+      let map = this.defaultMap
+
+      if (!map) {
+        const maps = await this.$store.dispatch('mapsSnapshot')
+        map = Object.keys(maps)[0]
+      }
+
+      this.$router.push(`/${map}`)
+    }
+  },
+
+  async beforeCreate() {
+    const { user } = await this.$fireAuth.getRedirectResult()
+
+    if (user) {
+      this.loading = true
+      this.$store.dispatch('storeUser', user)
+    }
+  },
+
+  methods: {
+    ...mapActions(['signIn'])
   }
 }
 </script>

@@ -41,7 +41,7 @@ export const actions = {
         })
 
         commit(UPDATE_MAPS, maps)
-        resolve()
+        resolve(maps)
       })
     })
   },
@@ -142,18 +142,18 @@ export const actions = {
     }
   },
 
-  async signIn({ commit }) {
+  signIn() {
     try {
       const provider = new this.$fireAuthObj.GoogleAuthProvider()
       provider.addScope('email')
 
-      const {
-        user: { email, displayName }
-      } = await this.$fireAuth.signInWithPopup(provider)
-
-      commit(UPDATE_USER, { email, displayName })
+      this.$fireAuth.signInWithRedirect(provider)
     } catch (ex) {
       window.alert(ex)
     }
+  },
+
+  storeUser({ commit }, { email, displayName }) {
+    commit(UPDATE_USER, { email, displayName })
   }
 }

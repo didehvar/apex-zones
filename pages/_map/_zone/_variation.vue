@@ -7,8 +7,6 @@
         <zone :map="map" />
       </div>
     </main>
-
-    <footer-links />
   </div>
 </template>
 
@@ -16,13 +14,11 @@
 import { mapGetters } from 'vuex'
 import Zone from '~/components/Zone'
 import ZoneList from '~/components/ZoneList'
-import FooterLinks from '~/components/FooterLinks'
 
 export default {
   components: {
     Zone,
-    ZoneList,
-    FooterLinks
+    ZoneList
   },
 
   data() {
@@ -36,7 +32,11 @@ export default {
   },
 
   created() {
-    this.$store.dispatch('mapsSnapshot')
-  }
+    if (!this.defaultMap) {
+      this.$store.dispatch('mapsSnapshot')
+    }
+  },
+
+  middleware: 'auth'
 }
 </script>
