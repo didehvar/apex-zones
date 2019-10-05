@@ -59,12 +59,10 @@
         <div
           v-for="screenshot in screenshots"
           :key="screenshot"
-          class="mx-2 my-2 bg-gray-100"
+          class="m-2 bg-gray-100"
           :class="{
-            'w-64': viewSmall,
-            'h-64': viewSmall,
-            'w-2/5': !viewSmall,
-            'h-2/5': !viewSmall
+            small: viewSmall,
+            large: !viewSmall
           }"
         >
           <img :src="screenshot" />
@@ -82,6 +80,16 @@
     </div>
   </div>
 </template>
+
+<style>
+.small {
+  width: calc(100% * (1 / 3) - 1rem);
+}
+
+.large {
+  width: calc(100% * (1 / 2) - 1rem);
+}
+</style>
 
 <script>
 import { mapGetters } from 'vuex'
@@ -104,7 +112,7 @@ export default {
 
     return {
       zone: this.$route.params.zone,
-      view: views.small,
+      view: views.large,
       views
     }
   },
