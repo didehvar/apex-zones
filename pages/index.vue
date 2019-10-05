@@ -11,7 +11,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
+      redirectTo: null
     }
   },
 
@@ -26,6 +27,10 @@ export default {
       if (!map) {
         const maps = await this.$store.dispatch('mapsSnapshot')
         map = Object.keys(maps)[0]
+      }
+
+      if (this.redirectTo) {
+        return this.$router.replace(this.redirectTo)
       }
 
       this.$router.push(`/${map}`)
@@ -43,6 +48,14 @@ export default {
 
   methods: {
     ...mapActions(['signIn'])
+  },
+
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (from.name) {
+        vm.redirectTo = from.path
+      }
+    })
   }
 }
 </script>
